@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nossa História de Amor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=Work+Sans:wght@300;400;500&display=swap');
+
+        :root {
+            --primary: #8e44ad;
+            --primary-light: rgba(142, 68, 173, 0.1);
+            --text: #2d3436;
+            --text-light: #636e72;
+            --white: #ffffff;
+            --background: #f5f6fa;
+            --card: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--background);
+            font-family: 'Work Sans', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0.2;
+            animation: floatUpward var(--duration) linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatUpward {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .content-card {
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow);
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: 'Spectral', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .counter-item {
+            background: var(--primary-light);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            font-family: 'Spectral', serif;
+        }
+
+        .counter-label {
+            font-size: 1rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        .quotes-section {
+            margin: 3rem 0;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .quote.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quote-text {
+            font-family: 'Spectral', serif;
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .quote-author {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .letter-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 2rem;
+            border: 1px solid rgba(142, 68, 173, 0.2);
+            border-radius: 8px;
+            margin: 3rem 0;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        .letter-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .letter-container::-webkit-scrollbar-track {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        .letter-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .love-letter {
+            font-family: 'Spectral', serif;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .music-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow);
+            width: 300px;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .counter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .music-container {
+                width: calc(100% - 2rem);
+                left: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="background"></div>
+
+    <main class="main-container">
+        <div class="content-card">
+            <h1>Nossa História de Amor</h1>
+
+            <div class="counter-grid">
+                <div class="counter-item">
+                    <div class="counter-number" id="days">0</div>
+                    <div class="counter-label">Dias</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" id="hours">0</div>
+                    <div class="counter-label">Horas</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" id="minutes">0</div>
+                    <div class="counter-label">Minutos</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" id="seconds">0</div>
+                    <div class="counter-label">Segundos</div>
+                </div>
+            </div>
+
+            <div class="quotes-section" id="quotes"></div>
+
+            <div class="letter-container">
+                <div class="love-letter">
+                    Meu amor,
+                    <br><br>
+                    Cada momento ao seu lado é uma nova descoberta, uma nova emoção, uma nova razão para sorrir. Desde aquele 27 de novembro, minha vida ganhou um novo significado, um novo brilho que só você poderia trazer.
+                    <br><br>
+                    "Que não seja imortal, posto que é chama, mas que seja infinito enquanto dure" - e com você, cada segundo é verdadeiramente infinito. Cada olhar, cada sorriso, cada momento compartilhado se transforma em memórias eternas que guardo com carinho.
+                    <br><br>
+                    Você é meu diamante precioso. Raro, único e especial. Seu brilho ilumina meus dias, sua presença torna tudo mais bonito, mais significativo.
+                    <br><br>
+                    Esse contador acima não mede apenas tempo - ele marca cada momento de felicidade, cada risada compartilhada, cada sonho que construímos juntos. E o melhor é saber que isso é apenas o começo da nossa história.
+                    <br><br>
+                    "Toda beleza que houver nesse mundo eu quero dividir só com você". E é exatamente assim que me sinto: quero compartilhar cada momento, cada conquista, cada desafio ao seu lado.
+                    <br><br>
+                    Obrigado por fazer parte da minha vida, por ser meu amor, minha inspiração, minha pessoa favorita no mundo inteiro.
+                    <br><br>
+                    Com todo meu amor,<br>
+                    Seu amor
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="music-container">
+        <iframe width="100%"
+                height="166"
+                scrolling="no"
+                frameborder="no"
+                allow="autoplay"
+                src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user-601604085/love-hotel-band-diamant&color=%238E44AD&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false">
+        </iframe>
+    </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '♥';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.setProperty('--duration', Math.random() * 5 + 15 + 's');
+            document.getElementById('background').appendChild(heart);
+
+            setTimeout(() => heart.remove(), 20000);
+        }
+
+        const quotes = [
+            {
+                text: "O amor é eterno enquanto dura",
+                author: "Vinicius de Moraes"
+            },
+            {
+                text: "Toda beleza que houver nesse mundo eu quero dividir só com você",
+                author: "Rubel"
+            },
+            {
+                text: "Du bist ein Diamant, ja, du bist brilliant",
+                author: "Yung Hurn - Diamant"
+            },
+            {
+                text: "Eu te amo porque te amo, não precisas ser amante, e nem sempre sabes sê-lo.",
+                author: "Carlos Drummond de Andrade"
+            },
+            {
+                text: "O amor é a poesia dos sentidos",
+                author: "Honoré de Balzac"
+            },
+            {
+                text: "Que não seja imortal, posto que é chama, mas que seja infinito enquanto dure",
+                author: "Vinicius de Moraes"
+            }
+        ];
+
+        let currentQuoteIndex = 0;
+        const startDate = new Date('2024-11-27T00:00:00');
+
+        function updateQuote() {
+            const quotesContainer = document.getElementById('quotes');
+            const quote = quotes[currentQuoteIndex];
+
+            const quoteElement = document.createElement('div');
+            quoteElement.className = 'quote';
+            quoteElement.innerHTML = `
+                <div class="quote-text">"${quote.text}"</div>
+                <div class="quote-author">— ${quote.author}</div>
+            `;
+
+            quotesContainer.innerHTML = '';
+            quotesContainer.appendChild(quoteElement);
+
+            setTimeout(() => quoteElement.classList.add('active'), 100);
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        }
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        setInterval(createHeart, 800);
+        setInterval(updateCounter, 1000);
+        setInterval(updateQuote, 7000);
+        updateCounter();
+        updateQuote();
+
+        for(let i = 0; i < 15; i++) {
+            setTimeout(createHeart, i * 200);
+        }
+    </script>
+</body>
+</html>
